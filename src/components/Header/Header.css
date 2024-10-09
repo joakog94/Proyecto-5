@@ -1,0 +1,25 @@
+header {
+  display: flex;
+  height: 100px;
+  padding: 5%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+header button {
+  padding: var(--padding-s) var(--padding-m);
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  border: 3px solid var(--color-5);
+  color: var(--color-3);
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    height: 150px;
+    gap: 10px;
+  }
+}

@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Signika:wght@300..700&display=swap');
+
+:root {
+  /* COLORS */
+  --color-1: #ff00d4;
+  --color-2: #9504ce;
+  --color-3: #ffffff;
+  --color-4: #00ffff;
+  --color-5: #000000;
+
+  /* SPACINGS */
+  --margin-xs: 5px;
+  --margin-s: 10px;
+  --margin-m: 20px;
+  --margin-l: 30px;
+  --margin-xl: 50px;
+  --margin-xxl: 80px;
+
+  --padding-xs: 5px;
+  --padding-s: 10px;
+  --padding-m: 20px;
+  --padding-l: 30px;
+  --padding-xl: 50px;
+  --padding-xxl: 80px;
+
+  --gap-xs: 5px;
+  --gap-s: 10px;
+  --gap-m: 20px;
+  --gap-l: 30px;
+  --gap-xl: 50px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  height: 100svh;
+  width: 100%;
+}
