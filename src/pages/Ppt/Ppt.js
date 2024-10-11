@@ -54,7 +54,7 @@ export const PiedraPapelTijera = () => {
 
   const resetButton = Button('Reiniciar', 'resetppt')
   resetButton.addEventListener('click', () => {
-    sessionStorage.clear()
+    localStorage.clear()
     playerScore = 0
     computerScore = 0
     document.getElementById('playerScore').textContent = playerScore
@@ -67,8 +67,8 @@ export const PiedraPapelTijera = () => {
 
   divContent.appendChild(gameContainer)
 
-  let playerScore = parseInt(sessionStorage.getItem('playerScore')) || 0
-  let computerScore = parseInt(sessionStorage.getItem('computerScore')) || 0
+  let playerScore = parseInt(localStorage.getItem('playerScore')) || 0
+  let computerScore = parseInt(localStorage.getItem('computerScore')) || 0
 
   document.getElementById('playerScore').textContent = playerScore
   document.getElementById('computerScore').textContent = computerScore
@@ -91,11 +91,11 @@ export const PiedraPapelTijera = () => {
     ) {
       result = '¡Has ganado!'
       playerScore++
-      sessionStorage.setItem('playerScore', playerScore)
+      localStorage.setItem('playerScore', playerScore)
     } else {
       result = '¡Perdiste!'
       computerScore++
-      sessionStorage.setItem('computerScore', computerScore)
+      localStorage.setItem('computerScore', computerScore)
     }
 
     document.getElementById('gameResult').textContent = result
