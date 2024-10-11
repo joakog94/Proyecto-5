@@ -1,56 +1,105 @@
+import { Button } from '../../components/Button/Button'
 import './Ppt.css'
 
-export const PiedaPapelTijera = () => {
+export const PiedraPapelTijera = () => {
   const divContent = document.querySelector('.content')
   divContent.innerHTML = ''
 
-  let playerScore = 0
-  let computerScore = 0
+  const gameContainer = document.createElement('div')
+  gameContainer.className = 'game-container'
 
-  // Función que inicializa el juego
-  function playGame(playerChoice) {
-    const computerChoice = computerPlay()
-    const result = checkWinner(playerChoice, computerChoice)
-    updateScore(result)
-  }
+  const title = document.createElement('h2')
+  title.textContent = '¡Elige tu jugada!'
+  gameContainer.appendChild(title)
 
-  // Función que simula la elección de la computadora
-  function computerPlay() {
-    const choices = ['Piedra', 'Papel', 'Tijeras']
-    const randomIndex = Math.floor(Math.random() * 3)
-    return choices[randomIndex]
-  }
+  const choices = ['piedra', 'papel', 'tijera']
+  choices.forEach((choice) => {
+    const img = document.createElement('img')
+    img.src = `./assets/${choice}.png`
+    img.alt = choice.charAt(0).toUpperCase() + choice.slice(1)
+    img.id = choice
+    img.style.cursor = 'pointer'
+    img.addEventListener('click', () =>
+      playGame(choice.charAt(0).toUpperCase() + choice.slice(1))
+    )
+    gameContainer.appendChild(img)
+  })
 
-  // Función que determina quién gana
-  function checkWinner(playerChoice, computerChoice) {
+  const resultContainer = document.createElement('div')
+  resultContainer.className = 'result'
+
+  const playerChoiceText = document.createElement('h3')
+  playerChoiceText.innerHTML = 'Jugador elige: <span id="playerChoice">-</span>'
+  resultContainer.appendChild(playerChoiceText)
+
+  const computerChoiceText = document.createElement('h3')
+  computerChoiceText.innerHTML =
+    'Computadora elige: <span id="computerChoice">-</span>'
+  resultContainer.appendChild(computerChoiceText)
+
+  const gameResultText = document.createElement('h3')
+  gameResultText.innerHTML = 'Resultado: <span id="gameResult">-</span>'
+  resultContainer.appendChild(gameResultText)
+
+  gameContainer.appendChild(resultContainer)
+
+  const scoreContainer = document.createElement('div')
+  scoreContainer.id = 'score'
+  scoreContainer.innerHTML = `
+    <h3>Jugador: <span id="playerScore">0</span></h3>
+    <h3>Computadora: <span id="computerScore">0</span></h3>
+  `
+
+  gameContainer.appendChild(scoreContainer)
+
+  const resetButton = Button('Reiniciar', 'resetppt')
+  resetButton.addEventListener('click', () => {
+    sessionStorage.clear()
+    playerScore = 0
+    computerScore = 0
+    document.getElementById('playerScore').textContent = playerScore
+    document.getElementById('computerScore').textContent = computerScore
+    document.getElementById('playerChoice').textContent = '-'
+    document.getElementById('computerChoice').textContent = '-'
+    document.getElementById('gameResult').textContent = '-'
+  })
+  gameContainer.appendChild(resetButton)
+
+  divContent.appendChild(gameContainer)
+
+  let playerScore = parseInt(sessionStorage.getItem('playerScore')) || 0
+  let computerScore = parseInt(sessionStorage.getItem('computerScore')) || 0
+
+  document.getElementById('playerScore').textContent = playerScore
+  document.getElementById('computerScore').textContent = computerScore
+
+  const playGame = (playerChoice) => {
+    document.getElementById('playerChoice').textContent = playerChoice
+
+    const computerChoices = ['Piedra', 'Papel', 'Tijera']
+    const randomIndex = Math.floor(Math.random() * computerChoices.length)
+    const computerChoice = computerChoices[randomIndex]
+    document.getElementById('computerChoice').textContent = computerChoice
+
+    let result
     if (playerChoice === computerChoice) {
-      return 'Empate'
-    }
-
-    if (
-      (playerChoice === 'Piedra' && computerChoice === 'Tijeras') ||
+      result = '¡Es un empate!'
+    } else if (
+      (playerChoice === 'Piedra' && computerChoice === 'Tijera') ||
       (playerChoice === 'Papel' && computerChoice === 'Piedra') ||
-      (playerChoice === 'Tijeras' && computerChoice === 'Papel')
+      (playerChoice === 'Tijera' && computerChoice === 'Papel')
     ) {
-      return 'Jugador'
-    } else {
-      return 'Computadora'
-    }
-  }
-
-  // Función que actualiza el marcador
-  function updateScore(winner) {
-    if (winner === 'Jugador') {
+      result = '¡Has ganado!'
       playerScore++
-    } else if (winner === 'Computadora') {
+      sessionStorage.setItem('playerScore', playerScore)
+    } else {
+      result = '¡Perdiste!'
       computerScore++
+      sessionStorage.setItem('computerScore', computerScore)
     }
 
-    document.getElementById(
-      'playerScore'
-    ).textContent = `Jugador: ${playerScore}`
-    document.getElementById(
-      'computerScore'
-    ).textContent = `Computadora: ${computerScore}`
+    document.getElementById('gameResult').textContent = result
+    document.getElementById('playerScore').textContent = playerScore
+    document.getElementById('computerScore').textContent = computerScore
   }
 }

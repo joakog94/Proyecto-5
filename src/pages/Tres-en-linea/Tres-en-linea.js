@@ -1,4 +1,5 @@
 import { Button } from '../../components/Button/Button'
+import { showMessage } from '../../components/Message/Message'
 import './Tres-en-linea.css'
 
 let pointsX = 0
@@ -117,8 +118,10 @@ export const TresEnLinea = () => {
     board[index] = currentPlayer
     event.target.textContent = currentPlayer
 
+    let result
     if (checkWinner()) {
-      alert(`¡${currentPlayer} ha ganado!`)
+      result = `¡${currentPlayer} ha ganado!`
+      showMessage(result, 'win')
       if (currentPlayer === 'X') {
         pointsX++
         document.getElementById('pointsX').textContent = pointsX
@@ -130,7 +133,8 @@ export const TresEnLinea = () => {
       }
       resetGame()
     } else if (board.every((cell) => cell)) {
-      alert('¡Es un empate!')
+      result = 'Es un empate'
+      showMessage(result, 'draw')
       resetGame()
     } else {
       currentPlayer = currentPlayer === 'X' ? 'O' : 'X'

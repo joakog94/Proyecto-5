@@ -1,12 +1,13 @@
-.cesta {
+.vader {
   width: 100px;
   position: absolute;
   z-index: 9999;
   right: 20px;
   bottom: 20px;
+  filter: drop-shadow(0px 0px 5px red);
 }
 
-.manzana {
+.laser {
   width: 50px;
   cursor: pointer;
   position: absolute;
@@ -30,7 +31,7 @@
   bottom: 30px !important;
 }
 
-.boton-manzana {
+.boton-laser {
   position: absolute;
   top: 100px;
   right: 20px;
@@ -38,8 +39,14 @@
   padding: var(--padding-s) var(--padding-m);
   cursor: pointer;
   background-color: transparent;
-
+  box-shadow: 0px 0px 10px var(--color-1);
   display: none;
+}
+
+h4 {
+  text-align: center;
+  margin: 10px;
+  color: var(--color-1);
 }
 
 .show {
@@ -47,7 +54,7 @@
 }
 
 @media (max-width: 600px) {
-  .boton-manzana {
+  .boton-laser {
     position: static;
     margin: 0 auto;
     width: 150px;

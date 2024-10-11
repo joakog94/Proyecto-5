@@ -8,6 +8,7 @@ header {
 
 header button {
   padding: var(--padding-s) var(--padding-m);
+  box-shadow: 0px 0px 10px var(--color-1);
   border-radius: 8px;
   font-size: 20px;
   font-weight: 600;

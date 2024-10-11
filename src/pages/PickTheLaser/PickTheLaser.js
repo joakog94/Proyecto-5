@@ -1,31 +1,34 @@
 import { Button } from '../../components/Button/Button'
-import './PickTheApple.css'
+import { showMessage } from '../../components/Message/Message'
+import './PickTheLaser.css'
 
 let Count = 0
 let intervalo = null
 let pausado = true
 let velocidad = 1000
 
-export const PickTheApple = () => {
+export const PickTheLaser = () => {
   const divContent = document.querySelector('.content')
   divContent.innerHTML = ''
   Count = 0
   velocidad = 1000
 
-  const cesta = document.createElement('img')
+  const vader = document.createElement('img')
   const textoContador = document.createElement('h2')
   const jugar = Button('JUGAR')
   const pausar = Button('PAUSAR')
-
+  const highScore = document.createElement('h4')
   const audio = document.createElement('audio')
 
   textoContador.textContent = Count
   textoContador.className = 'contador'
-  cesta.className = 'cesta'
-  cesta.src = './assets/cesta.png'
+  vader.className = 'vader'
+  vader.src = './assets/darthVader.png'
 
-  jugar.classList.add('boton-manzana')
-  pausar.classList.add('boton-manzana')
+  jugar.classList.add('boton-laser')
+  pausar.classList.add('boton-laser')
+  highScore.textContent =
+    'El record es : ' + (parseInt(localStorage.getItem('highScore')) || 0)
   audio.src = './assets/pop.mp3'
 
   jugar.addEventListener('click', () => {
@@ -44,32 +47,31 @@ export const PickTheApple = () => {
   divContent.append(audio)
   divContent.append(jugar)
   divContent.append(pausar)
+  divContent.append(highScore)
   divContent.append(textoContador)
-  divContent.append(cesta)
+  divContent.append(vader)
 }
 
-const createManzana = () => {
+const createLaser = () => {
   const divContent = document.querySelector('.content')
-
   let randomLeft = Math.random() * (window.innerWidth - 100)
   let randomTop = Math.random() * (window.innerHeight - 350)
 
-  const imgManzana = document.createElement('img')
+  const imgLaser = document.createElement('img')
+  imgLaser.className = 'laser'
+  imgLaser.style.top = `${randomTop + 270}px`
+  imgLaser.style.left = `${randomLeft}px`
+  imgLaser.style.transform = `rotate(${Math.random() * 360}deg)`
+  imgLaser.classList.add('recoger')
 
-  imgManzana.className = 'manzana'
-  imgManzana.style.top = `${randomTop + 270}px`
-  imgManzana.style.left = `${randomLeft}px`
-  imgManzana.style.transform = `rotate(${Math.random() * 360}deg)`
-  imgManzana.classList.add('recoger')
+  imgLaser.addEventListener('click', recogerLaser)
+  imgLaser.src = './assets/sable-de-luz.png'
 
-  imgManzana.addEventListener('click', recogerManzana)
-  imgManzana.src = './assets/manzana.png'
-
-  divContent.append(imgManzana)
+  divContent.append(imgLaser)
   comprobar()
 }
 
-const recogerManzana = (e) => {
+const recogerLaser = (e) => {
   const audio = document.querySelector('audio')
   audio.volume = 0.4
   audio.play()
@@ -91,40 +93,51 @@ const repintarTexto = (cont) => {
 }
 
 const comprobar = () => {
-  const allManzanas = document.querySelectorAll('.recoger')
-  if (allManzanas.length > 50) {
-    alert('Las manzanas te han superado')
+  let result
+  const allLasers = document.querySelectorAll('.recoger')
+
+  if (allLasers.length > 50) {
+    result = 'El lado oscuro te ha superado'
+    showMessage(result, 'lose')
     pausado = true
     clearInterval(intervalo)
-    PickTheApple()
+
+    const highScore = localStorage.getItem('highScore')
+      ? parseInt(localStorage.getItem('highScore'))
+      : 0
+
+    if (Count > highScore) {
+      localStorage.setItem('highScore', Count) // Solo guarda si es más alto
+      showMessage(`¡Nuevo récord! ${Count}`, 'high-score')
+    }
+
+    PickTheLaser() // Reinicia el juego
   }
 }
 
 const iniciarJuego = () => {
   clearInterval(intervalo)
-
   intervalo = setInterval(() => {
     if (!pausado) {
-      createManzana()
+      createLaser()
     }
   }, velocidad)
-
   incrementarVelocidad()
 }
 
-// Función que aumenta la velocidad de aparición
 const incrementarVelocidad = () => {
   const intervalosVelocidad = [
     5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000
   ]
-  intervalosVelocidad.forEach((delay, index) => {
+
+  intervalosVelocidad.forEach((delay) => {
     setTimeout(() => {
       if (!pausado) {
         velocidad -= 100
         clearInterval(intervalo)
         intervalo = setInterval(() => {
           if (!pausado) {
-            createManzana()
+            createLaser()
           }
         }, velocidad)
       }
